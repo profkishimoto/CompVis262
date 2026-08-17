@@ -1,0 +1,82 @@
+{
+  "tasks": [
+    {
+      "label": "Compilar exemplo (MinGW: mingw32-make)",
+      "type": "shell",
+      "command": "mingw32-make",
+      "args": [],
+      "options": {
+        "cwd": "${workspaceFolder}/src/${input:EscolherExemplo}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "build",
+      }
+    },
+    {
+      "label": "Compilar e rodar exemplo (MinGW: mingw32-make -> main.exe)",
+      "type": "shell",
+      "command": "mingw32-make; if ($?) { .\\main.exe }",
+      "args": [],
+      "options": {
+        "cwd": "${workspaceFolder}/src/${input:EscolherExemplo}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+    },
+    {
+      "label": "Limpar exemplo (MinGW: mingw32-make clean)",
+      "type": "shell",
+      "command": "mingw32-make clean",
+      "args": [],
+      "options": {
+        "cwd": "${workspaceFolder}/src/${input:EscolherExemplo}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "test",
+      },
+    },
+    {
+      "label": "Limpar todos os exemplos (MinGW: mingw32-make clean)",
+      "type": "shell",
+      "command": "Get-ChildItem -Path src -Directory | ForEach-Object { Write-Host \"Limpando $($_.Name)...\"; mingw32-make -C $_.FullName clean }",
+      "args": [],
+      "options": {
+        "shell": {
+          "executable": "powershell.exe",
+          "args": [
+            "-NoProfile",
+            "-Command"
+          ]
+        }
+      },
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "EscolherExemplo",
+      "type": "pickString",
+      "description": "Qual exemplo você quer {compilar|rodar|limpar}?",
+      "options": [
+        "01-hello",
+        "02-renderer",
+        "03-image",
+        "04-invert_image",
+        "05-filter_image",
+        "06-primitives"
+      ],
+    }      
+  ],
+  "version": "2.0.0"
+}
